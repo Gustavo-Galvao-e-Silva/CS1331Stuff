@@ -44,13 +44,14 @@ public class Collection {
 
         this.cardsOwned--;
         Card soldCard = this.binder[index];
+        this.binder[index] = null;
         System.out.printf("Sold: %s", soldCard);
         return soldCard;
     }
 
     public void showCertainCards(int minCondition) {
         for (Card card : this.binder) {
-            if (card != null) {
+            if (card != null && card.getCondition() > minCondition) {
                 System.out.println(card);
             }
         }
@@ -61,10 +62,9 @@ public class Collection {
         Random rand = new Random();
         for (Card card : this.binder) {
             if (card != null && card.isRestorable()) {
-                Card oldCard = card;
-                int newCondition = oldCard.getCondition() + rand.nextInt(10) + 1;
+                int newCondition = card.getCondition() + rand.nextInt(10) + 1;
+                System.out.printf("Restored to %d: %s%n", newCondition, card);
                 card.setCondition(newCondition);
-                System.out.printf("%Restored to %d: %s%n", newCondition, oldCard);
                 cardsRestored++;
             }
         }
@@ -82,6 +82,7 @@ public class Collection {
         Random rand = new Random();
         Card batlleCard = this.binder[index];
         int newCondition = batlleCard.getCondition() + rand.nextInt(10) + 1;
+        newCondition = newCondition < 40 ? 40 : newCondition;
         batlleCard.setCondition(newCondition);
         System.out.printf("Used: %s%n", batlleCard);
     }
@@ -94,7 +95,7 @@ public class Collection {
         String collectionString = String.format("I own %d cards.", this.cardsOwned);
         for (Card card : this.binder) {
             if (card != null) {
-                collectionString += card + "%n";
+                collectionString += String.format("%s%n", card);
             }
         }
 
@@ -102,7 +103,7 @@ public class Collection {
     }
 
     private boolean isValidIndex(int index) {
-        boolean isValidIndexPosition = index >= 0 && index <= this.binder.length;
+        boolean isValidIndexPosition = index >= 0 && index < this.binder.length;
         return isValidIndexPosition && this.binder[index] != null;
     }
 }
