@@ -1,8 +1,8 @@
 import java.util.Random;
 
 public class Collection {
-    Card[] binder;
-    int cardsOwned;
+    private Card[] binder;
+    private int cardsOwned;
 
     public Collection(Card[] binder) {
         this.binder = binder.clone();
@@ -20,19 +20,21 @@ public class Collection {
     }
 
     public Card addCard(int index, Card newCard) {
-        if (!isValidIndex(index)) {
+        if (!isValidIndexPosition(index) || newCard == null) {
             System.out.println("Cannot add a card to this spot.");
             return null;
         }
 
-        this.cardsOwned++;
         Card oldCard = this.binder[index];
         if (oldCard == null) {
             System.out.printf("Inserted: %s%n", newCard);
+            this.binder[index] = newCard;
+            this.cardsOwned++;
             return null;
         }
 
         System.out.printf("Replaced: %s%n", oldCard);
+        this.binder[index] = newCard;
         return oldCard;
     }
 
@@ -45,7 +47,7 @@ public class Collection {
         this.cardsOwned--;
         Card soldCard = this.binder[index];
         this.binder[index] = null;
-        System.out.printf("Sold: %s", soldCard);
+        System.out.printf("Sold: %s%n", soldCard);
         return soldCard;
     }
 
@@ -81,7 +83,7 @@ public class Collection {
         }
         Random rand = new Random();
         Card batlleCard = this.binder[index];
-        int newCondition = batlleCard.getCondition() + rand.nextInt(10) + 1;
+        int newCondition = batlleCard.getCondition() - (rand.nextInt(10) + 1);
         newCondition = newCondition < 40 ? 40 : newCondition;
         batlleCard.setCondition(newCondition);
         System.out.printf("Used: %s%n", batlleCard);
@@ -92,7 +94,7 @@ public class Collection {
             return "I own no cards!";
         }
 
-        String collectionString = String.format("I own %d cards.", this.cardsOwned);
+        String collectionString = String.format("I own %d cards.%n", this.cardsOwned);
         for (Card card : this.binder) {
             if (card != null) {
                 collectionString += String.format("%s%n", card);
@@ -103,7 +105,10 @@ public class Collection {
     }
 
     private boolean isValidIndex(int index) {
-        boolean isValidIndexPosition = index >= 0 && index < this.binder.length;
-        return isValidIndexPosition && this.binder[index] != null;
+        return isValidIndexPosition(index) && this.binder[index] != null;
+    }
+
+    private boolean isValidIndexPosition(int index) {
+        return index >= 0 && index < this.binder.length;
     }
 }

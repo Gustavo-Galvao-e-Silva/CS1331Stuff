@@ -13,24 +13,24 @@ public class Card {
         this.condition = isValidCondition(condition) ? condition : 80;
         int conditionFlag = this.condition / 10;
         switch (conditionFlag) {
-            case 4:
-                System.out.println("Card condition: Damaged");
-                break;
-            case 5:
-                System.out.println("Card condition: Fine");
-                break;
-            case 6:
-                System.out.println("Card condition: Good");
-                break;
-            case 7:
-                System.out.println("Card condition: Very Good");
-                break;
-            case 8:
-                System.out.println("Card condition: Excellent");
-                break;
-            default:
-                System.out.println("Card condition: Mint");
-                break;
+        case 4:
+            System.out.println("Card condition: Damaged");
+            break;
+        case 5:
+            System.out.println("Card condition: Fine");
+            break;
+        case 6:
+            System.out.println("Card condition: Good");
+            break;
+        case 7:
+            System.out.println("Card condition: Very Good");
+            break;
+        case 8:
+            System.out.println("Card condition: Excellent");
+            break;
+        default:
+            System.out.println("Card condition: Mint");
+            break;
         }
     }
 
@@ -55,7 +55,7 @@ public class Card {
     }
 
     public String toString() {
-        return String.format("<%d, %s, %s, %d, %d, %b>", this.hitpoints, this.pokemonName, this.pokemonType,
+        return String.format("<%d,%s,%s,%s,%d,%b>", this.hitpoints, this.pokemonName, this.pokemonType,
                 this.attack, this.condition, this.isRestorable());
     }
 
